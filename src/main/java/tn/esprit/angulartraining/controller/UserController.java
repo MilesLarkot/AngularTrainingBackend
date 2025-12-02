@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.angulartraining.dto.UserDto;
 import tn.esprit.angulartraining.service.UserService;
 import java.util.List;
+import tn.esprit.angulartraining.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import tn.esprit.angulartraining.payload.ApiResponse;
 import tn.esprit.angulartraining.mapper.UserMapper;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
