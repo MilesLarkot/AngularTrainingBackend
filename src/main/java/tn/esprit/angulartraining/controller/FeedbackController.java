@@ -22,12 +22,7 @@ public class FeedbackController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<FeedbackDto>> createFeedback(@Valid @RequestBody FeedbackDto feedbackDto) {
-        Feedback feedback = FeedbackMapper.toEntity(
-            feedbackDto,
-            null, // User and Event will be set in service
-            null
-        );
-        Feedback saved = feedbackService.createFeedback(feedback);
+        Feedback saved = feedbackService.createFeedback(feedbackDto);
         FeedbackDto dto = FeedbackMapper.toDto(saved);
         return ResponseEntity.ok(new ApiResponse<>(true, "Feedback created successfully", dto));
     }
@@ -46,12 +41,7 @@ public class FeedbackController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<FeedbackDto>> updateFeedback(@PathVariable Long id, @Valid @RequestBody FeedbackDto feedbackDto) {
-        Feedback feedback = FeedbackMapper.toEntity(
-            feedbackDto,
-            null, // User and Event will be set in service
-            null
-        );
-        Feedback updated = feedbackService.updateFeedback(id, feedback);
+        Feedback updated = feedbackService.updateFeedback(id, feedbackDto);
         FeedbackDto dto = FeedbackMapper.toDto(updated);
         return ResponseEntity.ok(new ApiResponse<>(true, "Feedback updated successfully", dto));
     }
