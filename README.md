@@ -1,12 +1,12 @@
 # EventApp Backend (Spring Boot)
 
 This is the backend for **EventApp**, built with Spring Boot.
-It exposes REST APIs for managing **Events** and **Tickets**, with best practices like DTOs, validation, unified responses, and Swagger documentation.
+It exposes REST APIs for managing **Events**, **Tickets**, **Users**, and **Feedback**, with best practices like DTOs, validation, unified responses, and Swagger documentation.
 
 <p align="center">
 <img width="50%" height="692" alt="backendisevil" src="https://github.com/user-attachments/assets/f6e0cfbc-5ff4-4bbb-bee3-e6c024afe42a" />
 </p>
-<p>I didn't add a user or an organizer because I wasn't sure if we were going to use them at any point.</p>
+<p>Now includes full support for <b>User</b> and <b>Feedback</b> management.</p>
 
 ---
 
@@ -22,34 +22,12 @@ http://localhost:42067/api
 
 1. [Events API](#events-api)
 2. [Tickets API](#tickets-api)
-3. [Unified Response Format](#unified-response-format)
-4. [Swagger UI](#swagger-ui)
-5. [Angular Example Usage](#angular-example-usage)
-6. [Quick Start](#quick-start)
-
----
-
-## **Unified Response Format**
-
-All endpoints return this structure:
-
-```json
-{
-  "success": true,
-  "message": "Descriptive message",
-  "data": { ... }
-}
-```
-
-**Errors** also follow the same structure:
-
-```json
-{
-  "success": false,
-  "message": "Error description",
-  "data": null
-}
-```
+3. [Users API](#users-api)
+4. [Feedback API](#feedback-api)
+5. [Unified Response Format](#unified-response-format)
+6. [Swagger UI](#swagger-ui)
+7. [Angular Example Usage](#angular-example-usage)
+8. [Quick Start](#quick-start)
 
 ---
 
@@ -63,15 +41,15 @@ All endpoints return this structure:
 
 ```json
 {
-    "title": "Angular Workshop",
-    "description": "Hands-on Angular training",
-    "date": "2025-12-01",
-    "price": 50,
-    "location": "Esprit Tunis",
-    "organizerId": 1,
-    "imageUrl": "https://example.com/image.jpg",
-    "nbrPlaces": 30,
-    "nbrLikes": 0
+  "title": "Angular Workshop",
+  "description": "Hands-on Angular training",
+  "date": "2025-12-01",
+  "price": 50,
+  "location": "Esprit Tunis",
+  "organizerId": 1,
+  "imageUrl": "https://example.com/image.jpg",
+  "nbrPlaces": 30,
+  "nbrLikes": 0
 }
 ```
 
@@ -158,12 +136,12 @@ All endpoints return this structure:
 
 ```json
 {
-    "price": 50,
-    "userId": 2,
-    "date": "2025-12-01",
-    "valid": true,
-    "description": "Front row ticket",
-    "eventId": 1
+  "price": 50,
+  "userId": 2,
+  "date": "2025-12-01",
+  "valid": true,
+  "description": "Front row ticket",
+  "eventId": 1
 }
 ```
 
@@ -255,6 +233,232 @@ All endpoints return this structure:
 
 ---
 
+## **Users API**
+
+### 1. Create User
+
+**POST** `/users`
+
+**Request Body (JSON)**
+
+```json
+{
+  "username": "john_doe",
+  "email": "john@example.com"
+}
+```
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "User created successfully",
+  "data": { "id": 1, "username": "john_doe", "email": "john@example.com" }
+}
+```
+
+### 2. Get All Users
+
+**GET** `/users`
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "All users retrieved",
+  "data": [{ "id": 1, "username": "john_doe", "email": "john@example.com" }]
+}
+```
+
+### 3. Get User by ID
+
+**GET** `/users/{id}`
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "User retrieved",
+  "data": { "id": 1, "username": "john_doe", "email": "john@example.com" }
+}
+```
+
+### 4. Update User
+
+**PUT** `/users/{id}`
+
+**Request Body** – same as create.
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "User updated successfully",
+  "data": {
+    "id": 1,
+    "username": "john_doe_updated",
+    "email": "john@example.com"
+  }
+}
+```
+
+### 5. Delete User
+
+**DELETE** `/users/{id}`
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "User deleted",
+  "data": null
+}
+```
+
+---
+
+## **Feedback API**
+
+### 1. Create Feedback
+
+**POST** `/feedbacks`
+
+**Request Body (JSON)**
+
+```json
+{
+  "comment": "Great event!",
+  "rating": 5,
+  "userId": 1,
+  "eventId": 1
+}
+```
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "Feedback created successfully",
+  "data": {
+    "id": 1,
+    "comment": "Great event!",
+    "rating": 5,
+    "userId": 1,
+    "eventId": 1
+  }
+}
+```
+
+### 2. Get All Feedbacks
+
+**GET** `/feedbacks`
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "All feedbacks retrieved",
+  "data": [
+    {
+      "id": 1,
+      "comment": "Great event!",
+      "rating": 5,
+      "userId": 1,
+      "eventId": 1
+    }
+  ]
+}
+```
+
+### 3. Get Feedback by ID
+
+**GET** `/feedbacks/{id}`
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "Feedback retrieved",
+  "data": {
+    "id": 1,
+    "comment": "Great event!",
+    "rating": 5,
+    "userId": 1,
+    "eventId": 1
+  }
+}
+```
+
+### 4. Update Feedback
+
+**PUT** `/feedbacks/{id}`
+
+**Request Body** – same as create.
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "Feedback updated successfully",
+  "data": {
+    "id": 1,
+    "comment": "Updated comment",
+    "rating": 4,
+    "userId": 1,
+    "eventId": 1
+  }
+}
+```
+
+### 5. Delete Feedback
+
+**DELETE** `/feedbacks/{id}`
+
+**Response**
+
+```json
+{
+  "success": true,
+  "message": "Feedback deleted",
+  "data": null
+}
+```
+
+---
+
+## **Unified Response Format**
+
+All endpoints return this structure:
+
+```json
+{
+  "success": true,
+  "message": "Descriptive message",
+  "data": { ... }
+}
+```
+
+**Errors** also follow the same structure:
+
+```json
+{
+  "success": false,
+  "message": "Error description",
+  "data": null
+}
+```
+
+---
+
 ## **Swagger UI**
 
 Visit:
@@ -280,31 +484,53 @@ export class AppModule { }
 **2. Event Service (`event.service.ts`)**
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class EventService {
-  private apiUrl = 'http://localhost:42067/api/events';
-  constructor(private http: HttpClient) { }
-  getAllEvents(): Observable<any> { return this.http.get<any>(this.apiUrl); }
-  getEvent(id: number): Observable<any> { return this.http.get<any>(`${this.apiUrl}/${id}`); }
-  createEvent(event: any): Observable<any> { return this.http.post<any>(this.apiUrl, event); }
-  updateEvent(id: number, event: any): Observable<any> { return this.http.put<any>(`${this.apiUrl}/${id}`, event); }
-  deleteEvent(id: number): Observable<any> { return this.http.delete<any>(`${this.apiUrl}/${id}`); }
+  private apiUrl = "http://localhost:42067/api/events";
+  constructor(private http: HttpClient) {}
+  getAllEvents(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+  getEvent(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+  createEvent(event: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, event);
+  }
+  updateEvent(id: number, event: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, event);
+  }
+  deleteEvent(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
 }
 ```
 
 **3. Ticket Service (`ticket.service.ts`)**
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class TicketService {
-  private apiUrl = 'http://localhost:42067/api/tickets';
-  constructor(private http: HttpClient) { }
-  getAllTickets(): Observable<any> { return this.http.get<any>(this.apiUrl); }
-  getTicket(id: number): Observable<any> { return this.http.get<any>(`${this.apiUrl}/${id}`); }
-  getTicketsByEvent(eventId: number): Observable<any> { return this.http.get<any>(`${this.apiUrl}/event/${eventId}`); }
-  createTicket(ticket: any): Observable<any> { return this.http.post<any>(this.apiUrl, ticket); }
-  updateTicket(id: number, ticket: any): Observable<any> { return this.http.put<any>(`${this.apiUrl}/${id}`, ticket); }
-  deleteTicket(id: number): Observable<any> { return this.http.delete<any>(`${this.apiUrl}/${id}`); }
+  private apiUrl = "http://localhost:42067/api/tickets";
+  constructor(private http: HttpClient) {}
+  getAllTickets(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+  getTicket(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+  getTicketsByEvent(eventId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/event/${eventId}`);
+  }
+  createTicket(ticket: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, ticket);
+  }
+  updateTicket(id: number, ticket: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, ticket);
+  }
+  deleteTicket(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
 }
 ```
 
